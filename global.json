@@ -1,0 +1,3 @@
+{
+  "projects": [ "src/dfu-sharp", "src/dfu-sharp.tests" ]
+}
