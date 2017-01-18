@@ -140,6 +140,18 @@ namespace DfuSharp
         public ushort bcdDFUVersion;
     }
 
+    public delegate void UploadingEventHandler(object sender, UploadingEventArgs e);
+
+    public class UploadingEventArgs : EventArgs
+    {
+        public int BytesUploaded { get; private set; }
+
+        public UploadingEventArgs(int bytesUpladed)
+        {
+            this.BytesUploaded = bytesUpladed;
+        }
+    }
+
     public class DfuDevice : IDisposable
     {
         // FIXME: Figure out why dfu_function_descriptor.wTransferSize isn't right and why STM isn't reporting flash_size right
@@ -159,6 +171,13 @@ namespace DfuSharp
                 throw new Exception("Error opening device");
         }
 
+        public event UploadingEventHandler Uploading;
+
+        protected virtual void OnUploaded(UploadingEventArgs e)
+        {
+            if (Uploading != null)
+                Uploading(this, e);
+        }
         public void ClaimInterface()
         {
             NativeMethods.libusb_claim_interface(handle, interface_descriptor.bInterfaceNumber);
@@ -240,6 +259,52 @@ namespace DfuSharp
             finally
             {
                 Marshal.FreeHGlobal(mem);
+            }
+        }
+
+        public void Upload(byte[] data, int? baseAddress = null)
+        {
+            var mem = Marshal.AllocHGlobal(transfer_size);
+
+            try
+            {
+                for (var pos = 0; pos < flash_size; pos += transfer_size)
+                {
+                    int write_address = (baseAddress ?? address) + pos;
+                    var count = Math.Min(data.Length - pos, transfer_size);
+
+                    if (count <= 0)
+                        return;
+
+                    SetAddress(write_address);
+
+                    Marshal.Copy(data, pos, mem, count);
+
+                    var ret = NativeMethods.libusb_control_transfer(
+                                                handle,
+                                                0x00 /*LIBUSB_ENDPOINT_OUT*/ | (0x1 << 5) /*LIBUSB_REQUEST_TYPE_CLASS*/ | 0x01 /*LIBUSB_RECIPIENT_INTERFACE*/,
+                                                1 /*DFU_DNLOAD*/,
+                                                2,
+                                                interface_descriptor.bInterfaceNumber,
+                                                mem,
+                                                (ushort)count,
+                                                5000);
+
+                    if (ret < 0)
+                        throw new Exception(string.Format("Error with WRITE_SECTOR: {0}", ret));
+                    var status = GetStatus(handle, interface_descriptor.bInterfaceNumber);
+
+                    while (status == 4)
+                    {
+                        Thread.Sleep(100);
+                        status = GetStatus(handle, interface_descriptor.bInterfaceNumber);
+                    }
+                    Uploading(this, new UploadingEventArgs(pos));
+                }
+            }
+            finally
+            {
+            Marshal.FreeHGlobal(mem);
             }
         }
 
