@@ -146,9 +146,9 @@ namespace DfuSharp
     {
         public int BytesUploaded { get; private set; }
 
-        public UploadingEventArgs(int bytesUpladed)
+        public UploadingEventArgs(int bytesUploaded)
         {
-            this.BytesUploaded = bytesUpladed;
+            this.BytesUploaded = bytesUploaded;
         }
     }
 
@@ -304,7 +304,7 @@ namespace DfuSharp
             }
             finally
             {
-            Marshal.FreeHGlobal(mem);
+                Marshal.FreeHGlobal(mem);
             }
         }
 
