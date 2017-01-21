@@ -173,7 +173,7 @@ namespace DfuSharp
 
         public event UploadingEventHandler Uploading;
 
-        protected virtual void OnUploaded(UploadingEventArgs e)
+        protected virtual void OnUploading(UploadingEventArgs e)
         {
             if (Uploading != null)
                 Uploading(this, e);
@@ -211,54 +211,22 @@ namespace DfuSharp
             }
         }
 
-        public void Upload(FileStream file)
+        public void Upload(FileStream file, int? baseAddress = null)
         {
             var buffer = new byte[transfer_size];
-            var mem = Marshal.AllocHGlobal(transfer_size);
-
-            try
+            
+            using (var reader = new BinaryReader(file))
             {
-                using (var reader = new BinaryReader(file))
+                for (var pos = 0; pos < flash_size; pos += transfer_size)
                 {
-                    for (var pos = 0; pos < flash_size; pos += transfer_size)
-                    {
-                        int write_address = address + pos;
-                        var count = reader.Read(buffer, 0, transfer_size);
+                    int write_address = (baseAddress ?? address) + pos;
+                    var count = reader.Read(buffer, 0, transfer_size);
 
-                        if (count == 0)
-                            return;
+                    if (count == 0)
+                        return;
 
-                        EraseSector(write_address);
-                        SetAddress(write_address);
-
-                        Marshal.Copy(buffer, 0, mem, count);
-
-
-                        var ret = NativeMethods.libusb_control_transfer(
-                                                    handle,
-                                                    0x00 /*LIBUSB_ENDPOINT_OUT*/ | (0x1 << 5) /*LIBUSB_REQUEST_TYPE_CLASS*/ | 0x01 /*LIBUSB_RECIPIENT_INTERFACE*/,
-                                                    1 /*DFU_DNLOAD*/,
-                                                    2,
-                                                    interface_descriptor.bInterfaceNumber,
-                                                    mem,
-                                                    (ushort)count,
-                                                    5000);
-
-                        if (ret < 0)
-                            throw new Exception(string.Format("Error with WRITE_SECTOR: {0}", ret));
-                        var status = GetStatus(handle, interface_descriptor.bInterfaceNumber);
-
-                        while (status == 4)
-                        {
-                            Thread.Sleep(100);
-                            status = GetStatus(handle, interface_descriptor.bInterfaceNumber);
-                        }
-                    }
+                    Upload(buffer, write_address);
                 }
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(mem);
             }
         }
 
