@@ -214,7 +214,7 @@ namespace DfuSharp
         public void Upload(FileStream file, int? baseAddress = null)
         {
             var buffer = new byte[transfer_size];
-            
+
             using (var reader = new BinaryReader(file))
             {
                 for (var pos = 0; pos < flash_size; pos += transfer_size)
@@ -267,7 +267,7 @@ namespace DfuSharp
                         Thread.Sleep(100);
                         status = GetStatus(handle, interface_descriptor.bInterfaceNumber);
                     }
-                    Uploading(this, new UploadingEventArgs(pos));
+                    OnUploading(new UploadingEventArgs(count));
                 }
             }
             finally
