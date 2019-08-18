@@ -24,8 +24,11 @@ namespace WildernessLabs.DfuSharp.Cli
         public void Run()
         {
             if (_options != null) {
+                // -l (List) Command
                 if (_options.List) {
-                    var devices = _dfuContext.GetDfuDevices(0x483, 0xdf11);
+                    // STM32F7 devices only (0x483 = ST, 0xdf11 = F7)
+                    //var devices = _dfuContext.GetDfuDevices(0x483, 0xdf11);
+                    var devices = _dfuContext.GetDfuDevices();
 
                     if (devices.Count <= 0) {
                         Console.WriteLine("No DFU devices found.");

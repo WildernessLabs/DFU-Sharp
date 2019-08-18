@@ -21,6 +21,11 @@ namespace WildernessLabs.DfuSharp
             NativeMethods.libusb_exit(handle);
         }
 
+        public List<DfuDevice> GetDfuDevices()
+        {
+            return GetDfuDevices(0, 0);
+        }
+
         public List<DfuDevice> GetDfuDevices(ushort idVendor, ushort idProduct)
         {
             var list = IntPtr.Zero;
@@ -38,11 +43,20 @@ namespace WildernessLabs.DfuSharp
                 var device_descriptor = new DeviceDescriptor();
                 var ptr = IntPtr.Zero;
 
-                if (NativeMethods.libusb_get_device_descriptor(devices[i], ref device_descriptor) != 0)
+                if (NativeMethods.libusb_get_device_descriptor(devices[i], ref device_descriptor) != 0) {
                     continue;
+                }
 
-                if (device_descriptor.idVendor != idVendor && device_descriptor.idProduct != idProduct)
+                // filter on vendorID or productID if passed
+                if (idVendor != 0 && device_descriptor.idVendor != idVendor
+                    ||
+                    idProduct != 0 && device_descriptor.idProduct != idProduct) {
                     continue;
+                }
+                //if (device_descriptor.idVendor != idVendor
+                //    && device_descriptor.idProduct != idProduct) {
+                //    continue;
+                //}
 
                 for (int j = 0; j < device_descriptor.bNumConfigurations; j++) {
                     ret = NativeMethods.libusb_get_config_descriptor(devices[i], (ushort)j, out ptr);
