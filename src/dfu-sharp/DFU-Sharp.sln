@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfu-Sharp", "Dfu-Sharp\Dfu-Sharp.csproj", "{DC214316-54C6-47EE-8840-02713F5E0E3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfu-Sharp.Tests", "Dfu-Sharp.Tests\Dfu-Sharp.Tests.csproj", "{9E2E6CDA-FEBA-4630-B6E2-7E35A16696BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC214316-54C6-47EE-8840-02713F5E0E3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC214316-54C6-47EE-8840-02713F5E0E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC214316-54C6-47EE-8840-02713F5E0E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC214316-54C6-47EE-8840-02713F5E0E3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E2E6CDA-FEBA-4630-B6E2-7E35A16696BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E2E6CDA-FEBA-4630-B6E2-7E35A16696BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E2E6CDA-FEBA-4630-B6E2-7E35A16696BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E2E6CDA-FEBA-4630-B6E2-7E35A16696BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
