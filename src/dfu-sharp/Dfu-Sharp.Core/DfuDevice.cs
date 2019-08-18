@@ -14,11 +14,32 @@ namespace WildernessLabs.DfuSharp
         const int address = 0x08000000;
 
         IntPtr handle;
+
+        public DeviceDescriptor DeviceDescriptor {
+            get => _deviceDescriptor;
+            protected set => _deviceDescriptor = value;
+        } protected DeviceDescriptor _deviceDescriptor;
+
+        public InterfaceDescriptor InterfaceDescriptor {
+            get => interface_descriptor;
+            set => interface_descriptor = value;
+        }
         InterfaceDescriptor interface_descriptor;
+
+        public DfuFunctionDescriptor DfuFunctionDescriptor {
+            get => dfu_descriptor;
+            set => dfu_descriptor = value;
+        }
         DfuFunctionDescriptor dfu_descriptor;
 
-        public DfuDevice(IntPtr device, InterfaceDescriptor interface_descriptor, DfuFunctionDescriptor dfu_descriptor)
+
+        public DfuDevice(
+            IntPtr device,
+            DeviceDescriptor descriptor,
+            InterfaceDescriptor interface_descriptor,
+            DfuFunctionDescriptor dfu_descriptor)
         {
+            this._deviceDescriptor = descriptor;
             this.interface_descriptor = interface_descriptor;
             this.dfu_descriptor = dfu_descriptor;
             if (NativeMethods.libusb_open(device, ref handle) < 0)

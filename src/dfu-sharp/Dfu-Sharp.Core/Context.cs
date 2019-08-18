@@ -68,7 +68,11 @@ namespace WildernessLabs.DfuSharp
 
                             var dfu_descriptor = FindDescriptor(interface_descriptor.extra, interface_descriptor.extra_length, (byte)Consts.USB_DT_DFU);
                             if (dfu_descriptor != null)
-                                dfu_devices.Add(new DfuDevice(devices[i], interface_descriptor, dfu_descriptor.Value));
+                                dfu_devices.Add(new DfuDevice(
+                                    devices[i],
+                                    device_descriptor,
+                                    interface_descriptor,
+                                    dfu_descriptor.Value));
                         }
                     }
                 }

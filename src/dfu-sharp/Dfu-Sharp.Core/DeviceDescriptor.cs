@@ -1,7 +1,7 @@
 ﻿using System;
 namespace WildernessLabs.DfuSharp
 {
-    struct DeviceDescriptor
+    public struct DeviceDescriptor
     {
         public byte bLength;
         public byte bDescriptorType;

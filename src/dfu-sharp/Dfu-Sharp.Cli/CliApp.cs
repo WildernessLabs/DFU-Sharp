@@ -32,7 +32,8 @@ namespace WildernessLabs.DfuSharp.Cli
                     }
 
                     foreach (var d in devices) {
-                        Console.WriteLine($"Found Device; {d.ToString()}.");
+                        Console.WriteLine($"Found Device; 0x{d.DeviceDescriptor.idProduct.ToString("x")}.");
+                        
                     }
                 }
             } else {
