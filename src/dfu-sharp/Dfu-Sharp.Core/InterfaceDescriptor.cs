@@ -3,17 +3,17 @@ namespace WildernessLabs.DfuSharp
 {
     public struct InterfaceDescriptor
     {
-        public byte bLength;
-        public byte bDescriptorType;
-        public byte bInterfaceNumber;
-        public byte bAlternateSetting;
-        public byte bNumEndpoints;
-        public byte bInterfaceClass;
-        public byte bInterfaceSubClass;
-        public byte bInterfaceProtocol;
-        public byte iInterface;
-        public IntPtr endpoint;
-        public IntPtr extra;
-        public int extra_length;
+        public byte Length;
+        public byte DescriptorType;
+        public byte InterfaceNumber;
+        public byte AlternateSetting;
+        public byte NumEndpoints;
+        public byte InterfaceClass;
+        public byte InterfaceSubClass;
+        public byte InterfaceProtocol;
+        public byte @Interface;
+        public IntPtr Endpoint;
+        public IntPtr Extra;
+        public int Extra_length;
     }
 }

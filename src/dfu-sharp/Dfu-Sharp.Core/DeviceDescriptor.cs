@@ -3,19 +3,19 @@ namespace WildernessLabs.DfuSharp
 {
     public struct DeviceDescriptor
     {
-        public byte bLength;
-        public byte bDescriptorType;
+        public byte Length;
+        public byte DescriptorType;
         public ushort bcdUSB;
-        public byte bDeviceClass;
-        public byte bDeviceSubClass;
-        public byte bDeviceProtocol;
-        public byte bMaxPacketSize0;
-        public ushort idVendor;
-        public ushort idProduct;
+        public byte DeviceClass;
+        public byte DeviceSubClass;
+        public byte DeviceProtocol;
+        public byte MaxPacketSize0;
+        public ushort VendorID;
+        public ushort ProductID;
         public ushort bcdDevice;
-        public byte iManufacturer;
-        public byte iProduct;
-        public byte iSerialNumber;
-        public byte bNumConfigurations;
+        public byte Manufacturer;
+        public byte Product;
+        public byte SerialNumber;
+        public byte NumConfigurations;
     }
 }

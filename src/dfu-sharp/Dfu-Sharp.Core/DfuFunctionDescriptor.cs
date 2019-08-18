@@ -3,11 +3,11 @@ namespace WildernessLabs.DfuSharp
 {
     public struct DfuFunctionDescriptor
     {
-        public byte bLength;
-        public byte bDescriptorType;
-        public byte bmAttributes;
-        public ushort wDetachTimeOut;
-        public ushort wTransferSize;
-        public ushort bcdDFUVersion;
+        public byte Length;
+        public byte DescriptorType;
+        public byte Attributes;
+        public ushort DetachTimeOut;
+        public ushort TransferSize;
+        public ushort DFUVersion;
     }
 }

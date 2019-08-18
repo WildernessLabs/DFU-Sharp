@@ -32,7 +32,6 @@ namespace WildernessLabs.DfuSharp
         }
         DfuFunctionDescriptor dfu_descriptor;
 
-
         public DfuDevice(
             IntPtr device,
             DeviceDescriptor descriptor,
@@ -55,12 +54,12 @@ namespace WildernessLabs.DfuSharp
         }
         public void ClaimInterface()
         {
-            NativeMethods.libusb_claim_interface(handle, interface_descriptor.bInterfaceNumber);
+            NativeMethods.libusb_claim_interface(handle, interface_descriptor.InterfaceNumber);
         }
 
         public void SetInterfaceAltSetting(int alt_setting)
         {
-            NativeMethods.libusb_set_interface_alt_setting(handle, interface_descriptor.bInterfaceNumber, alt_setting);
+            NativeMethods.libusb_set_interface_alt_setting(handle, interface_descriptor.InterfaceNumber, alt_setting);
         }
 
         public void Clear()
@@ -68,15 +67,15 @@ namespace WildernessLabs.DfuSharp
             var state = (byte)0xff;
 
             while (state != 0 && state != 2) {
-                state = GetStatus(handle, interface_descriptor.bInterfaceNumber);
+                state = GetStatus(handle, interface_descriptor.InterfaceNumber);
 
                 switch (state) {
                     case 5:
                     case 9:
-                        Abort(handle, interface_descriptor.bInterfaceNumber);
+                        Abort(handle, interface_descriptor.InterfaceNumber);
                         break;
                     case 10:
-                        ClearStatus(handle, interface_descriptor.bInterfaceNumber);
+                        ClearStatus(handle, interface_descriptor.InterfaceNumber);
                         break;
                     default:
                         break;
@@ -122,18 +121,18 @@ namespace WildernessLabs.DfuSharp
                                                 0x00 /*LIBUSB_ENDPOINT_OUT*/ | (0x1 << 5) /*LIBUSB_REQUEST_TYPE_CLASS*/ | 0x01 /*LIBUSB_RECIPIENT_INTERFACE*/,
                                                 1 /*DFU_DNLOAD*/,
                                                 2,
-                                                interface_descriptor.bInterfaceNumber,
+                                                interface_descriptor.InterfaceNumber,
                                                 mem,
                                                 (ushort)count,
                                                 5000);
 
                     if (ret < 0)
                         throw new Exception(string.Format("Error with WRITE_SECTOR: {0}", ret));
-                    var status = GetStatus(handle, interface_descriptor.bInterfaceNumber);
+                    var status = GetStatus(handle, interface_descriptor.InterfaceNumber);
 
                     while (status == 4) {
                         Thread.Sleep(100);
-                        status = GetStatus(handle, interface_descriptor.bInterfaceNumber);
+                        status = GetStatus(handle, interface_descriptor.InterfaceNumber);
                     }
                     OnUploading(new UploadingEventArgs(count));
                 }
@@ -157,7 +156,7 @@ namespace WildernessLabs.DfuSharp
                                                                 0x80 /*LIBUSB_ENDPOINT_IN*/ | (0x1 << 5) /*LIBUSB_REQUEST_TYPE_CLASS*/ | 0x01 /*LIBUSB_RECIPIENT_INTERFACE*/,
                                                                 2 /*DFU_UPLOAD*/,
                                                                 transaction++,
-                                                                interface_descriptor.bInterfaceNumber,
+                                                                interface_descriptor.InterfaceNumber,
                                                                 mem,
                                                                 transfer_size,
                                                                 5000);
@@ -191,7 +190,7 @@ namespace WildernessLabs.DfuSharp
                                         0x00 /*LIBUSB_ENDPOINT_OUT*/ | (0x1 << 5) /*LIBUSB_REQUEST_TYPE_CLASS*/ | 0x01 /*LIBUSB_RECIPIENT_INTERFACE*/,
                                         1 /*DFU_DNLOAD*/,
                                         0,
-                                        interface_descriptor.bInterfaceNumber,
+                                        interface_descriptor.InterfaceNumber,
                                         mem,
                                         5,
                                         5000);
@@ -199,11 +198,11 @@ namespace WildernessLabs.DfuSharp
                 if (ret < 0)
                     throw new Exception(string.Format("Error with ERASE_SECTOR: {0}", ret));
 
-                var status = GetStatus(handle, interface_descriptor.bInterfaceNumber);
+                var status = GetStatus(handle, interface_descriptor.InterfaceNumber);
 
                 while (status == 4) {
                     Thread.Sleep(100);
-                    status = GetStatus(handle, interface_descriptor.bInterfaceNumber);
+                    status = GetStatus(handle, interface_descriptor.InterfaceNumber);
                 }
             } finally {
                 Marshal.FreeHGlobal(mem);
@@ -227,7 +226,7 @@ namespace WildernessLabs.DfuSharp
                                         0x00 /*LIBUSB_ENDPOINT_OUT*/ | (0x1 << 5) /*LIBUSB_REQUEST_TYPE_CLASS*/ | 0x01 /*LIBUSB_RECIPIENT_INTERFACE*/,
                                         1 /*DFU_DNLOAD*/,
                                         0,
-                                        interface_descriptor.bInterfaceNumber,
+                                        interface_descriptor.InterfaceNumber,
                                         mem,
                                         5,
                                         5000);
@@ -235,11 +234,11 @@ namespace WildernessLabs.DfuSharp
                 if (ret < 0)
                     throw new Exception(string.Format("Error with ERASE_SECTOR: {0}", ret));
 
-                var status = GetStatus(handle, interface_descriptor.bInterfaceNumber);
+                var status = GetStatus(handle, interface_descriptor.InterfaceNumber);
 
                 while (status == 4) {
                     Thread.Sleep(100);
-                    status = GetStatus(handle, interface_descriptor.bInterfaceNumber);
+                    status = GetStatus(handle, interface_descriptor.InterfaceNumber);
                 }
             } finally {
                 Marshal.FreeHGlobal(mem);
