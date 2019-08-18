@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfu-Sharp", "Dfu-Sharp\Dfu-Sharp.csproj", "{DC214316-54C6-47EE-8840-02713F5E0E3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfu-Sharp.Core", "Dfu-Sharp.Core\Dfu-Sharp.Core.csproj", "{DC214316-54C6-47EE-8840-02713F5E0E3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfu-Sharp.Tests", "Dfu-Sharp.Tests\Dfu-Sharp.Tests.csproj", "{9E2E6CDA-FEBA-4630-B6E2-7E35A16696BE}"
 EndProject

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>WildernessLabs.Dfu-Sharp</RootNamespace>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageId>WildernessLabs.Dfu-Sharp</PackageId>
+    <PackageVersion>0.4</PackageVersion>
+    <Authors>Geoff Norton</Authors>
+    <Copyright>WildernessLabs</Copyright>
+    <PackageLicenseUrl>https://github.com/WildernessLabs/DFU-Sharp/blob/master/license/readme.md</PackageLicenseUrl>
+    <Owners>Wilderness Labs</Owners>
+    <PackageProjectUrl>https://github.com/WildernessLabs/DFU-Sharp</PackageProjectUrl>
+    <PackageTags>DFU</PackageTags>
+    <Title>DFU-Sharp</Title>
+    <Description>Simple utility for uploading files to a device in Device Firmware Upgrade (DFU) mode.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+</Project>

@@ -19,6 +19,6 @@
     <Compile Remove="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dfu-Sharp\Dfu-Sharp.csproj" />
+    <ProjectReference Include="..\Dfu-Sharp.Core\Dfu-Sharp.Core.csproj" />
   </ItemGroup>
 </Project>
