@@ -10,6 +10,14 @@ Dfu-Sharp is released under the [Apache 2](license/) license.
 
 ## Authors
 
+### Dfu-Sharp Core:
+
 Geoff Norton
 
-Contributions from Bryan Costanich and Brian Kim.
+### Dfu-Sharp CLI:
+
+Bryan Costanich
+
+### General
+
+Contributions fromBrian Kim.

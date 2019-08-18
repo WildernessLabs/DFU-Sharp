@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfu-Sharp.Core", "Dfu-Sharp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfu-Sharp.Tests", "Dfu-Sharp.Tests\Dfu-Sharp.Tests.csproj", "{9E2E6CDA-FEBA-4630-B6E2-7E35A16696BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfu-Sharp.Cli", "Dfu-Sharp.Cli\Dfu-Sharp.Cli.csproj", "{89C05C15-3B6F-4B2E-8E50-94D660676BF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,5 +21,9 @@ Global
 		{9E2E6CDA-FEBA-4630-B6E2-7E35A16696BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E2E6CDA-FEBA-4630-B6E2-7E35A16696BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E2E6CDA-FEBA-4630-B6E2-7E35A16696BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89C05C15-3B6F-4B2E-8E50-94D660676BF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C05C15-3B6F-4B2E-8E50-94D660676BF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C05C15-3B6F-4B2E-8E50-94D660676BF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C05C15-3B6F-4B2E-8E50-94D660676BF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
