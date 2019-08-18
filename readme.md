@@ -6,7 +6,7 @@ A dotnet library for uploading firmware to embedded devices in Device Firmware U
 
 ## License
 
-Dfu-Sharp is released under the [Apache 2](License/license.md) license.
+Dfu-Sharp is released under the [Apache 2](license/) license.
 
 ## Authors
 
