@@ -16,7 +16,7 @@ namespace WildernessLabs.DfuSharp.Cli
             Options options = null;
             Parser.Default.ParseArguments<Options>(args)
             .WithParsed<Options>(optionsOut => {
-                Console.WriteLine("Hey yo, options are a go");
+                //Console.WriteLine("Hey yo, options are a go");
                 //
                 options = optionsOut;
             });

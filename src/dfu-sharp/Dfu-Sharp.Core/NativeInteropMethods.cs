@@ -5,6 +5,8 @@ namespace WildernessLabs.DfuSharp
 {
     class NativeMethods
     {
+        internal const int Pack = 0;
+
         const string LIBUSB_LIBRARY = "libusb-1.0";
 
         [DllImport(LIBUSB_LIBRARY)]

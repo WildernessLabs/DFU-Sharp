@@ -91,7 +91,7 @@ namespace WildernessLabs.DfuSharp
                     // marshal the descriptor to our ConfigDescriptor struct
                     var config_descriptor = Marshal.PtrToStructure<ConfigDescriptor>(ptr);
 
-                    // loop through all the interfaces in the descriptor
+                    // loop through all the interfaces in the Config descriptor
                     for (int k = 0; k < config_descriptor.bNumInterfaces; k++) {
                         // magic math
                         var p = config_descriptor.interfaces + j * Marshal.SizeOf<@Interface>();
@@ -107,6 +107,7 @@ namespace WildernessLabs.DfuSharp
                             var interface_descriptor = @interface.Altsetting[l];
 
                             // Ensure this is a DFU descriptor
+                            // TODO: This doesn't make sense. 0xFE = application, and 0x1 = audio
                             if (interface_descriptor.InterfaceClass != 0xfe
                                 ||
                                 interface_descriptor.InterfaceSubClass != 0x1) {

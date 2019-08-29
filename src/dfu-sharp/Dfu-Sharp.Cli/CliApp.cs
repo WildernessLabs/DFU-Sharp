@@ -36,7 +36,9 @@ namespace WildernessLabs.DfuSharp.Cli
 
                     foreach (var d in devices) {
                         Console.WriteLine($"Found Device; {d.DeviceDescriptor.Manufacturer} 0x{d.DeviceDescriptor.ProductID.ToString("x")}.");
-                        
+                        Console.WriteLine($"Serial: {d.DeviceDescriptor.SerialNumber}");
+
+                        Console.WriteLine($"DFU Function Descriptor: {d.DfuFunctionDescriptor.ToString()}");
                     }
                 }
             } else {

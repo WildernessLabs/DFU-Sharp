@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+
 namespace WildernessLabs.DfuSharp
 {
+    [StructLayoutAttribute(LayoutKind.Sequential, Pack = NativeMethods.Pack)]
     public struct DeviceDescriptor
     {
         public byte Length;
