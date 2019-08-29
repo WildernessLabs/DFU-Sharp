@@ -106,27 +106,29 @@ namespace WildernessLabs.DfuSharp
                         for (int l = 0; l < @interface.num_altsetting; l++) {
                             var interface_descriptor = @interface.Altsetting[l];
 
-                            // Ensure this is a DFU descriptor
-                            // TODO: This doesn't make sense. 0xFE = application, and 0x1 = audio
+                            // Ensure this interface has DFU
                             if (interface_descriptor.InterfaceClass != 0xfe
                                 ||
                                 interface_descriptor.InterfaceSubClass != 0x1) {
                                 continue;
                             }
 
-                            // get the descriptor for the interface
+                            // get the DFU descriptor for the interface
                             var dfu_descriptor = FindDescriptor(
                                 interface_descriptor.Extra,
                                 interface_descriptor.Extra_length,
                                 (byte)Consts.USB_DT_DFU);
 
                             // finally, if we got here; add the device to the list
-                            if (dfu_descriptor != null)
+                            // BUGBUG? this is the DFU descriptor for just this particular
+                            // interface, but what if they're different between interfaces?
+                            if (dfu_descriptor != null) {
                                 dfu_devices.Add(new DfuDevice(
                                     devices[i],
                                     device_descriptor,
                                     interface_descriptor,
                                     dfu_descriptor.Value));
+                            }
                         }
                     }
                 }
