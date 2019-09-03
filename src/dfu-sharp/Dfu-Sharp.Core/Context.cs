@@ -46,25 +46,31 @@ namespace WildernessLabs.DfuSharp
             var dfu_devices = new List<DfuDevice>();
 
             // get the device list (returns a pointer)
-            var ret = NativeMethods.libusb_get_device_list(handle, ref list);
+            //var ret = NativeMethods.libusb_get_device_list(handle, ref list);
+            var num_devices = NativeMethods.libusb_get_device_list(handle, ref list);
 
             // err check
-            if (ret < 0) {
-                throw new Exception(string.Format($"Error: {ret} while trying to get the device list"));
+            if (num_devices < 0) {
+                throw new Exception(string.Format($"Error: {num_devices} while trying to get the device list"));
             }
 
+
             // make a copy of the device pointers
-            var devices = new IntPtr[ret];
-            Marshal.Copy(list, devices, 0, ret);
+            var devices = new IntPtr[num_devices];
+            Marshal.Copy(list, devices, 0, num_devices);
 
             // This is awful nested looping -- we should fix it.
             // loop through all the devices.
-            for (int i = 0; i < ret; i++) {
+            Console.WriteLine($"Total of ({num_devices}) devices found.");
+            for (int i = 0; i < num_devices; i++) {
+                Console.WriteLine($"Checking device #{i}");
+
                 var device_descriptor = new DeviceDescriptor();
                 var ptr = IntPtr.Zero;
 
                 // if the device descriptor is 0, go to next item.
                 if (NativeMethods.libusb_get_device_descriptor(devices[i], ref device_descriptor) != 0) {
+                    Console.WriteLine($"Descriptor is empty, moving on.");
                     continue;
                 }
 
@@ -72,16 +78,21 @@ namespace WildernessLabs.DfuSharp
                 if (vendorID != 0 && device_descriptor.VendorID != vendorID
                     ||
                     productID != 0 && device_descriptor.ProductID != productID) {
+                    Console.WriteLine($"Device doesn't match vendor (is:0x{device_descriptor.VendorID.ToString("x")}) or product id (is:0x{device_descriptor.ProductID.ToString("x")})");
                     continue;
                 }
+              
+                Console.WriteLine($"Found a matching device (vendor is:0x{device_descriptor.VendorID.ToString("x")}) (product is:0x{device_descriptor.ProductID.ToString("x")}).");
 
                 // BUGBUG: serial number only has one digit. not getting marshalled correctly.
                 //Console.WriteLine($"VendorID: {device_descriptor.VendorID}, ProductID: {device_descriptor.ProductID}, Serial: {device_descriptor.SerialNumber}");
 
                 // loop through all configurations for the device
                 for (int j = 0; j < device_descriptor.NumConfigurations; j++) {
+                    Console.WriteLine($"Found ({device_descriptor.NumConfigurations}) configs.");
+
                     // get the descriptor
-                    ret = NativeMethods.libusb_get_config_descriptor(devices[i], (ushort)j, out ptr);
+                    var ret = NativeMethods.libusb_get_config_descriptor(devices[i], (ushort)j, out ptr);
 
                     // err check
                     if (ret < 0) {
@@ -132,6 +143,8 @@ namespace WildernessLabs.DfuSharp
                         }
                     }
                 }
+
+                Console.WriteLine($"Moving on to the next device in the list, i={i}.");
             }
 
             // release the device list on LibUsb
