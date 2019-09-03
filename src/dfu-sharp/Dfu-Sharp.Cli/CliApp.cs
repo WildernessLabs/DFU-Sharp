@@ -27,18 +27,25 @@ namespace WildernessLabs.DfuSharp.Cli
                 // -l (List) Command
                 if (_options.List) {
                     // STM32F7 devices only (0x483 = ST, 0xdf11 = F7)
-                    //var devices = _dfuContext.GetDfuDevices(0x483, 0xdf11);
-                    var devices = _dfuContext.GetDfuDevices();
+                    var devices = _dfuContext.GetDfuDevices(0x483, 0xdf11);
+                    //var devices = _dfuContext.GetDfuDevices();
 
                     if (devices.Count <= 0) {
                         Console.WriteLine("No DFU devices found.");
                     }
 
+                    Console.WriteLine($"Found ({devices.Count}) devices.");
+
                     foreach (var d in devices) {
                         Console.WriteLine($"Found Device; {d.DeviceDescriptor.Manufacturer} 0x{d.DeviceDescriptor.ProductID.ToString("x")}.");
                         Console.WriteLine($"Serial: {d.DeviceDescriptor.SerialNumber}");
 
-                        Console.WriteLine($"DFU Function Descriptor: {d.DfuFunctionDescriptor.ToString()}");
+                        Console.WriteLine($"DFU Function Descriptor: {{");
+                        Console.WriteLine($"  DFUVersion: {d.DfuFunctionDescriptor.DFUVersion}");
+                        Console.WriteLine($"  Attributes: {d.DfuFunctionDescriptor.Attributes.ToString()}");
+                        Console.WriteLine($"  Length: {d.DfuFunctionDescriptor.Length}");
+                        Console.WriteLine($"  TransferSize: {d.DfuFunctionDescriptor.TransferSize}");
+                        Console.WriteLine($"}}");
                     }
                 }
             } else {
