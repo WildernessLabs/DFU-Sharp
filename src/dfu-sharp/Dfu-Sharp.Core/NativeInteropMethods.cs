@@ -31,6 +31,18 @@ namespace WildernessLabs.DfuSharp
         internal static extern int libusb_get_config_descriptor(IntPtr dev, ushort config_index, out IntPtr desc);
 
         [DllImport(LIBUSB_LIBRARY)]
+        internal static extern int libusb_get_string_descriptor_ascii(
+            IntPtr dev, byte descriptor_index, IntPtr desc, ushort length);
+        //internal static unsafe extern int libusb_get_string_descriptor_ascii(
+        //    IntPtr dev, byte descriptor_index, byte* desc, int length);
+        //internal static extern int libusb_get_string_descriptor_ascii(
+        //    IntPtr dev, byte descriptor_index, out IntPtr desc, ushort length);
+
+        //[DllImport(LIBUSB_LIBRARY, EntryPoint = "libusb_get_string_descriptor_ascii")]
+        //internal static extern int GetStringDescriptorAscii(DeviceHandle devHandle, byte descIndex, byte* data, int length);
+
+
+        [DllImport(LIBUSB_LIBRARY)]
         internal static extern int libusb_open(IntPtr dev, ref IntPtr handle);
 
         [DllImport(LIBUSB_LIBRARY)]

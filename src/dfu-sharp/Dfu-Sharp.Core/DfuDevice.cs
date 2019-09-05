@@ -9,11 +9,13 @@ namespace WildernessLabs.DfuSharp
     {
         // TODO:
         // FIXME: Figure out why dfu_function_descriptor.wTransferSize isn't right and why STM isn't reporting flash_size right
-        const int flash_size = 0x200000;
+        const int flash_size = 0x200000; //2048 * 1024 = 2097152 => 0x200000
         const int transfer_size = 0x800;
-        const int address = 0x08000000;
+        const int _address = 0x08000000;
 
         IntPtr handle;
+
+        public string Serial { get; set; }
 
         public DeviceDescriptor DeviceDescriptor {
             get => _deviceDescriptor;
@@ -89,7 +91,7 @@ namespace WildernessLabs.DfuSharp
 
             using (var reader = new BinaryReader(file)) {
                 for (var pos = 0; pos < flash_size; pos += transfer_size) {
-                    int write_address = (baseAddress ?? address) + pos;
+                    int write_address = (baseAddress ?? _address) + pos;
                     var count = reader.Read(buffer, 0, transfer_size);
 
                     if (count == 0)
@@ -106,7 +108,7 @@ namespace WildernessLabs.DfuSharp
 
             try {
                 for (var pos = 0; pos < flash_size; pos += transfer_size) {
-                    int write_address = (baseAddress ?? address) + pos;
+                    int write_address = (baseAddress ?? _address) + pos;
                     var count = Math.Min(data.Length - pos, transfer_size);
 
                     if (count <= 0)

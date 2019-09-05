@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -33,6 +35,20 @@ namespace WildernessLabs.DfuSharp
             return GetDfuDevices(0, 0);
         }
 
+        public DfuDevice? GetDfuDevice(string serial)
+        {
+            List<DfuDevice> dfuDevices = GetDfuDevices();
+
+            foreach (var d in dfuDevices) {
+                if(d.Serial == serial) {
+                    return d;
+                }
+            }
+
+            return null;
+        }
+
+        
         /// <summary>
         /// Enumerates attached DFU devices that match the passed VendorID and
         /// ProductID.
@@ -68,6 +84,10 @@ namespace WildernessLabs.DfuSharp
                 var device_descriptor = new DeviceDescriptor();
                 var ptr = IntPtr.Zero;
 
+                // open the device
+                IntPtr deviceHandle = IntPtr.Zero;
+                NativeMethods.libusb_open(devices[i], ref deviceHandle);
+
                 // if the device descriptor is 0, go to next item.
                 if (NativeMethods.libusb_get_device_descriptor(devices[i], ref device_descriptor) != 0) {
                     //Console.WriteLine($"Descriptor is empty, moving on.");
@@ -81,11 +101,14 @@ namespace WildernessLabs.DfuSharp
                     ///Console.WriteLine($"Device doesn't match vendor (is:0x{device_descriptor.VendorID.ToString("x")}) or product id (is:0x{device_descriptor.ProductID.ToString("x")})");
                     continue;
                 }
-              
+
+                // get the serial number
+                string serial = GetDescriptorAscii(deviceHandle, device_descriptor.SerialNumberIndex);
+                //Console.WriteLine($"Serial: {serial}");
+
+
                 //Console.WriteLine($"Found a matching device (vendor is:0x{device_descriptor.VendorID.ToString("x")}) (product is:0x{device_descriptor.ProductID.ToString("x")}).");
 
-                // BUGBUG: serial number only has one digit. not getting marshalled correctly.
-                //Console.WriteLine($"VendorID: {device_descriptor.VendorID}, ProductID: {device_descriptor.ProductID}, Serial: {device_descriptor.SerialNumber}");
 
                 // loop through all configurations for the device
                 for (int j = 0; j < device_descriptor.NumConfigurations; j++) {
@@ -138,12 +161,15 @@ namespace WildernessLabs.DfuSharp
                                     devices[i],
                                     device_descriptor,
                                     interface_descriptor,
-                                    dfu_descriptor.Value));
+                                    dfu_descriptor.Value) {
+                                    Serial = serial
+                                });
                             }
                         }
                     }
                 }
 
+                NativeMethods.libusb_close(deviceHandle);
                 //Console.WriteLine($"Moving on to the next device in the list, i={i}.");
             }
 
@@ -152,6 +178,21 @@ namespace WildernessLabs.DfuSharp
             NativeMethods.libusb_free_device_list(list, 1);
 
             return dfu_devices;
+        }
+
+        static unsafe string GetDescriptorAscii(IntPtr handle, byte index)
+        {
+            var buf = Marshal.AllocHGlobal(256);
+
+            int ret = NativeMethods.libusb_get_string_descriptor_ascii(handle, index, buf, 256);
+            if (ret < 0) {
+                //Console.WriteLine($"Err when trying to get serial descriptor: {ret}");
+                return "";
+            }
+            var str = Marshal.PtrToStringAnsi(buf, ret);
+
+            Marshal.FreeHGlobal(buf);
+            return str;
         }
 
         static DfuFunctionDescriptor? FindDescriptor(IntPtr desc_list, int list_len, byte desc_type)

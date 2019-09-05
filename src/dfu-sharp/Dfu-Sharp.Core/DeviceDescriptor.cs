@@ -18,7 +18,7 @@ namespace WildernessLabs.DfuSharp
         public ushort bcdDevice;
         public byte Manufacturer;
         public byte Product;
-        public byte SerialNumber;
+        public byte SerialNumberIndex;
         public byte NumConfigurations;
     }
 }
