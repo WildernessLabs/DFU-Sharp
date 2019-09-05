@@ -56,5 +56,8 @@ namespace WildernessLabs.DfuSharp
 
         [DllImport(LIBUSB_LIBRARY)]
         internal static extern int libusb_control_transfer(IntPtr dev, byte bmRequestType, byte bRequest, ushort wValue, ushort wIndex, IntPtr data, ushort wLength, uint timeout);
+
+        [DllImport(LIBUSB_LIBRARY)]
+        internal static extern int libusb_reset_device(IntPtr handle);
     }
 }

@@ -84,9 +84,11 @@ namespace WildernessLabs.DfuSharp.Cli
                         Console.WriteLine($"Done.");
                         device.Clear();
 
-                        Console.WriteLine($"Uploading {kernalFilePath}.");
-                        device.Upload(System.IO.File.OpenRead(userFilePath), userAddress);
-                        Console.WriteLine($"Done.");
+                        //Console.WriteLine($"Uploading {kernalFilePath}.");
+                        //device.Upload(System.IO.File.OpenRead(userFilePath), userAddress);
+                        //Console.WriteLine($"Done.");
+
+                        device.Reset();
 
                         device.Dispose();
                     } else {

@@ -64,6 +64,13 @@ namespace WildernessLabs.DfuSharp
             NativeMethods.libusb_set_interface_alt_setting(handle, interface_descriptor.InterfaceNumber, alt_setting);
         }
 
+        public void Reset()
+        {
+            //INFO: https://github.com/libusb/libusb/issues/455
+            // need libusb 1.0.23 for this to work on mac
+            NativeMethods.libusb_reset_device(handle);
+        }
+
         public void Clear()
         {
             var state = (byte)0xff;
